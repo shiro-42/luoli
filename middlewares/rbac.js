@@ -5,7 +5,7 @@ const defaultGetRole = (context) => context
   : undefined
 
 const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
-  (context, initialize, base) => next => async (...args) => {
+  (config, context, base) => next => async (...args) => {
     context.usePermission = (action) => {
 
     }

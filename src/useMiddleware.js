@@ -1,4 +1,4 @@
-function createContext (config = {}, enhancer) {
+function useMiddleware (config = {}, enhancer) {
   const initialContext = {}
 
   if (!enhancer) {
@@ -8,7 +8,7 @@ function createContext (config = {}, enhancer) {
   if (enhancer && arguments[3]) {
     throw new Error(
       'It looks like you are passing several store enhancers to ' +
-        'createContext(). This is not supported. Instead, compose them ' +
+        'useMiddleware(). This is not supported. Instead, compose them ' +
         'together to a single function'
     )
   }
@@ -35,4 +35,4 @@ function createContext (config = {}, enhancer) {
   return useService
 }
 
-module.exports = createContext
+module.exports = useMiddleware

@@ -1,7 +1,7 @@
-const { createContext } = require('../src')
+const { useMiddleware } = require('../src')
 
-test('createContext - return a function', () => {
-  const useService = createContext({})
+test('useMiddleware - return a function', () => {
+  const useService = useMiddleware({})
 
   expect(typeof useService).toEqual('function')
 })
@@ -14,7 +14,7 @@ test('useService - call a service and return the service result', async () => {
     return obj
   }
 
-  const useService = createContext({})
+  const useService = useMiddleware({})
 
   const service = useService(Service)
   const result = await service()
@@ -39,7 +39,7 @@ test('useService - the service receive the params', async () => {
     return obj
   }
 
-  const useService = createContext({})
+  const useService = useMiddleware({})
 
   const service = useService(Service)
   const result = await service(p1, p2, p3)

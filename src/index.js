@@ -1,4 +1,4 @@
+const useMiddleware = require('./useMiddleware')
 const applyMiddleware = require('./applyMiddleware')
-const createContext = require('./createContext')
 
-module.exports = { createContext, applyMiddleware }
+module.exports = { useMiddleware, applyMiddleware }

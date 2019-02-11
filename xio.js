@@ -1,4 +1,4 @@
-const { createContext, applyMiddleware } = require('.')
+const { useMiddleware, applyMiddleware } = require('.')
 const contextMiddleware = require('./middlewares/context')
 const rbacMiddleware = require('./middlewares/rbac')
 const loggerMiddleware = require('./middlewares/logger')
@@ -66,9 +66,9 @@ const UpdateUser = ({ useContext, useService }) => async (id, payload) => {
 const enhancer = applyMiddleware(contextMiddleware, loggerMiddleware(console))
 
 const main = async () => {
-  const context = { user: { role: 'ADMIN' } }
+  const config = { user: { role: 'ADMIN' } }
 
-  const useService = createContext(context, enhancer)
+  const useService = useMiddleware(config, enhancer)
 
   const updateUser = useService(UpdateUser)
 

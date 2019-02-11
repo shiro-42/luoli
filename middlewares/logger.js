@@ -1,7 +1,7 @@
 const defaultFormat = x => x
 
 const loggerMiddleware = (logger, format = defaultFormat) =>
-  (context, initialize) => next => async (...args) => {
+  (_, context) => next => async (...args) => {
     logger.log(`${context.actionName} ->`)
     try {
       const res = await next(...args)

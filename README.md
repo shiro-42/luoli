@@ -1,19 +1,22 @@
 # Luoli
 
-Help you to create reusable services for your application.
+Wrap your functions with sexy middlewares without hassle.
 
-# Service
+# Why use Luoli ?
 
-A service is simple function.
+When you are writing functions or services in node.js you sometime want to generate side-effects,
+share a context or simply add logging it's a not easy to do it in a elegant way without a lot of
+boilerplate.
 
-# Why Luoli ?
-
-Luoli can help you to add middlewares like logging, rbac helpers.
+Luoli help you to add middlewares to everything without modifying the signature of your function.
 
 ```javascript
 
+// The function you want to wrap
+const UpdateUser = () => (id, payload) => User.update(id, payload)
+
 // prepare the middleware
-const enhancer = applyMiddleware(contextMiddleware, loggingMiddleware(logger))
+const enhancer = applyMiddleware(loggingMiddleware(console))
 
 // create the config to pass to middlewares
 const config = { user: { role: 'ADMIN' } }
@@ -28,4 +31,10 @@ const res = await updateUser(1, { name: 'Jessica' })
 
 console.log(res)
 
+// Output
+// updateUser ->
+// updateUser <-
+
 ```
+
+Now you can follow in the console every call of updateUser.

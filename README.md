@@ -12,18 +12,14 @@ Luoli can help you to add middlewares like logging, rbac helpers.
 
 ```javascript
 
-const luoli = new Luoli() // Create a new Luoli instance
+// prepare the middleware
+const enhancer = applyMiddleware(contextMiddleware, loggingMiddleware(logger))
 
-// register middlewares
-luoli
-  .use(contextMiddleware)
-  .use(loggingMiddleware(logger))
+// create the config to pass to middlewares
+const config = { user: { role: 'ADMIN' } }
 
-// create a context object
-const context = { user: { role: 'ADMIN' } }
-
-// create the useService using the context
-const useService = luoli.prepareContext(context)
+// create the useService function using the config and enhancer
+const useService = luoli.createContext(config, enhancer)
 
 // get the binded useService function
 const updateUser = useService(UpdateUser)

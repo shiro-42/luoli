@@ -1,6 +1,6 @@
 # Luoli
 
-Wrap your functions with sexy middlewares without hassle.
+Wrap your functions with sexy middlewares without the hassle.
 
 # Why use Luoli ?
 
@@ -13,10 +13,10 @@ Luoli help you to add middlewares to everything without modifying the signature 
 ```javascript
 
 // The function you want to wrap
-const UpdateUser = () => (id, payload) => User.update(id, payload)
+const UpdateUser = () => (id, payload) => new Promise(r => setTimeout(r, 200))
 
 // prepare the middleware
-const enhancer = applyMiddleware(loggingMiddleware(console))
+const enhancer = applyMiddleware(timerMiddleware)
 
 // create the config to pass to middlewares
 const config = { user: { role: 'ADMIN' } }
@@ -32,9 +32,7 @@ const res = await updateUser(1, { name: 'Jessica' })
 console.log(res)
 
 // Output
-// updateUser ->
-// updateUser <-
-
+// UpdateUser: 200.86 ms
 ```
 
-Now you can follow in the console every call of updateUser.
+Now you can check in the console the duration every call of updateUser.

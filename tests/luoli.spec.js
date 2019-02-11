@@ -1,12 +1,42 @@
 const { useMiddleware } = require('../src')
 
+test('useMiddleware - can instantiate without args', () => {
+  const useService = useMiddleware()
+
+  expect(typeof useService).toEqual('function')
+})
+
 test('useMiddleware - return a function', () => {
   const useService = useMiddleware({})
 
   expect(typeof useService).toEqual('function')
 })
 
-test('useService - call a service and return the service result', async () => {
+test('useMiddleware - can give an enhancer', () => {
+  const enhancer = () => n => n
+  const useService = useMiddleware({}, enhancer)
+
+  expect(typeof useService).toEqual('function')
+})
+
+test('useMiddleware - only accept one enhancer', () => {
+  const enhancer1 = () => n => n
+  const enhancer2 = () => n => n
+
+  expect(() => {
+    useMiddleware({}, enhancer1, enhancer2)
+  }).toThrow()
+})
+
+test('useMiddleware - enhancer must be a function', () => {
+  const enhancer = false
+
+  expect(() => {
+    useMiddleware({}, enhancer)
+  }).toThrow()
+})
+
+test('useService - return the result', async () => {
   let called = false
   const obj = {}
   const Service = () => () => {
@@ -24,7 +54,7 @@ test('useService - call a service and return the service result', async () => {
   expect(result).toStrictEqual(obj)
 })
 
-test('useService - the service receive the params', async () => {
+test('useService - receive the params', async () => {
   let called = false
   const obj = {}
   const p1 = 1

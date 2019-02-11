@@ -2,6 +2,7 @@ const { useMiddleware, applyMiddleware } = require('.')
 const contextMiddleware = require('./middlewares/context')
 const rbacMiddleware = require('./middlewares/rbac')
 const loggerMiddleware = require('./middlewares/logger')
+const timerMiddleware = require('./middlewares/timer')
 
 function UserModel() {
   const userData = { name: 'Luo li' }
@@ -18,9 +19,7 @@ function UserModel() {
 const LogUser = ({ useContext }) => (id) => {
   const context = useContext()
 
-  console.log(context)
-
-  console.log('hey')
+  return new Promise(resolve => setTimeout(resolve, 200))
 }
 
 const LogCtx = ({ useContext, useService, updateContext }) => async (id) => {
@@ -28,13 +27,8 @@ const LogCtx = ({ useContext, useService, updateContext }) => async (id) => {
 
   updateContext({ someData: 2 })
 
-  console.log(context)
   const logUser = useService(LogUser)
-
-  console.log(useService)
-
   await logUser()
-  console.log('JJJ')
 }
 
 const UpdateUser = ({ useContext, useService }) => async (id, payload) => {
@@ -45,8 +39,6 @@ const UpdateUser = ({ useContext, useService }) => async (id, payload) => {
 
   // await logUser(2)
   await logCtx()
-
-  console.log(context)
 
   return 1
 
@@ -63,7 +55,11 @@ const UpdateUser = ({ useContext, useService }) => async (id, payload) => {
   // return updatedUser
 }
 
-const enhancer = applyMiddleware(contextMiddleware, loggerMiddleware(console))
+const enhancer = applyMiddleware(
+  contextMiddleware,
+  loggerMiddleware(console),
+  timerMiddleware
+)
 
 const main = async () => {
   const config = { user: { role: 'ADMIN' } }

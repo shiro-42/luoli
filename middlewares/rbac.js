@@ -4,10 +4,16 @@ const defaultGetRole = (context) => context
     : undefined
   : undefined
 
+function havePermission(roleMap, action, role) {
+  return roleMap[role].includes(action)
+}
+
 const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
   (config, context, base) => next => async (...args) => {
-    context.usePermission = (action) => {
 
+    context.usePermission = (action) => {
+      const role = getRole(context)
+      return havePermission(roleMap, action, role)
     }
 
     const res = await next(...args)

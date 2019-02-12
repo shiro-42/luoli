@@ -5,22 +5,24 @@
  * @param enhancer     the function enhancer
  * @returns {Function} the function used to decorate your desired function
  */
-function useMiddleware (context = {}, enhancer) {
-  const serviceContext = { context }
+function useMiddleware (config = {}, enhancer) {
+  const serviceContext = { config }
 
   // Initialize enhancer with the serviceContext
   const contextifiedEnhancer = enhancer(serviceContext)
 
-  const useService = serviceCreator => (...args) => {
+  const useService = (serviceCreator, parentContext) => (...args) => {
     const actionName = serviceCreator.name
     const instanceContext = { ...serviceContext, actionName }
 
-    // instanceContext.useService = (sCreator) => useService(sCreator, instanceContext)
+    if (parentContext) {
+      instanceContext.parent = parentContext
+    }
+
+    instanceContext.useService = (sCreator) => useService(sCreator, instanceContext)
 
     return contextifiedEnhancer(instanceContext)(serviceCreator(instanceContext))(...args)
   }
-
-  serviceContext.useService = useService
 
   return useService
 }

@@ -1,8 +1,6 @@
-const defaultGetRole = (context) => context
-  ? context.user
-    ? context.user.role
-    : undefined
-  : undefined
+const get = require('lodash.get')
+
+const defaultGetRole = (context) => get(context, 'config.context.user.role')
 
 function havePermission(roleMap, action, role) {
   return roleMap[role].includes(action)
@@ -22,17 +20,16 @@ function havePermission(roleMap, action, role) {
  * }
  *
  */
-const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
-  (config, context, base) => next => async (...args) => {
 
-    context.usePermission = (action) => {
-      const role = getRole(context)
+const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
+  (serviceContext) => (instanceContext) => {
+
+    context.instanceContext = (action) => {
+      const role = getRole(serviceContext)
       return havePermission(roleMap, action, role)
     }
 
-    const res = await next(...args)
-
-    return res
+    return next => (...args) => next(...args)
   }
 
 module.exports = rbacMiddleware

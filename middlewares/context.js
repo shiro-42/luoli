@@ -1,14 +1,16 @@
-const contextMiddleware = (config, context, initialContext) => next => async (...args) => {
-  context.user = config.user
-  context.useContext = function () {
-    return context
-  }
-  context.updateContext = function (changes) {
-    Object.assign(initialContext, changes)
-  }
+const get = require('lodash.get')
 
-  const res = await next(...args)
-  return res
+const contextMiddleware = (serviceContext) => {
+  const context = get(serviceContext, 'config.context', {})
+
+  return (executionContext) => {
+    executionContext.useContext = function () {
+      return context
+    }
+
+    return next => (...args) => next(...args)
+  }
 }
 
 module.exports = contextMiddleware
+

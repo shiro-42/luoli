@@ -1,4 +1,4 @@
-const loggerMiddleware = (_, context) => next => async (...args) => {
+const timerMiddleware = () => context => next => async (...args) => {
   var hrtime = process.hrtime()
   const start = ((hrtime[0] * 1e9) + hrtime[1]) / 1e6
 
@@ -16,4 +16,4 @@ const loggerMiddleware = (_, context) => next => async (...args) => {
   }
 }
 
-module.exports = loggerMiddleware
+module.exports = timerMiddleware

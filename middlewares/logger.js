@@ -6,7 +6,7 @@ const formatDate = date => {
 }
 
 const loggerMiddleware = (logger, format = defaultFormat) =>
-  (_, context) => next => async (...args) => {
+  () => (context) => next => async (...args) => {
     const start = new Date()
     logger.log(`[${formatDate(start)}] - ${context.actionName} ->`)
     try {
@@ -15,6 +15,7 @@ const loggerMiddleware = (logger, format = defaultFormat) =>
       logger.log(`[${formatDate(end)}] - ${context.actionName} \x1b[32m<-\x1b[0m`)
       return res
     } catch (err) {
+      const end = new Date()
       logger.error(`[${formatDate(end)}] - ${context.actionName} \x1b[31m<-\x1b[0m`)
       throw err
     }

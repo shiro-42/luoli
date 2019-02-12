@@ -1,3 +1,10 @@
+/**
+ * useMiddleware
+ *
+ * @param config={} the configuration object passed to every middlewares
+ * @param enhancer the middleware for you function
+ * @returns {Function} the function used to decorate your desired function
+ */
 function useMiddleware (config = {}, enhancer) {
   const initialContext = {}
 
@@ -30,11 +37,8 @@ function useMiddleware (config = {}, enhancer) {
 
     instanceContext.actionName = serviceCreator.name
 
-    // wrap the context to be sure to not get asynchronous issues
-    const getContext = () => instanceContext
-
     return enhancer(config, instanceContext, initialContext)(
-      (...args) => serviceCreator(getContext())(...args)
+      (...args) => serviceCreator(instanceContext)(...args)
     )
   }
 

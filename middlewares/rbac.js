@@ -8,6 +8,20 @@ function havePermission(roleMap, action, role) {
   return roleMap[role].includes(action)
 }
 
+/**
+ *
+ * const roleMap = {
+ *  ADMIN: [
+ *    'create user',
+ *    'update user',
+ *    'read user'
+ *  ],
+ *  CLIENT: [
+ *    'read user'
+ *  ]
+ * }
+ *
+ */
 const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
   (config, context, base) => next => async (...args) => {
 

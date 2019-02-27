@@ -1,6 +1,6 @@
 const compose = require('./compose')
 
-function applyMiddleware(...middlewares) {
+function applyMiddleware (...middlewares) {
   return (...args) => {
     // apply the service context
     const chain = middlewares.map(plugin => plugin(...args))

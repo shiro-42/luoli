@@ -21,11 +21,10 @@ function useMiddleware (config = {}, enhancer) {
 
     instanceContext.useService = (sCreator) => useService(sCreator, instanceContext)
 
-    return contextifiedEnhancer(instanceContext)(serviceCreator(instanceContext))(...args)
+    return contextifiedEnhancer(instanceContext, {})(serviceCreator(instanceContext))(...args)
   }
 
   return useService
 }
-
 
 module.exports = useMiddleware

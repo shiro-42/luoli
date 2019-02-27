@@ -13,4 +13,3 @@ const contextMiddleware = (serviceContext) => {
 }
 
 module.exports = contextMiddleware
-

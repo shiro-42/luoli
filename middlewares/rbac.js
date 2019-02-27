@@ -1,9 +1,12 @@
 const get = require('lodash.get')
 
-const defaultGetRole = (context) => get(context, 'config.context.user.role')
+const defaultGetRole = (context) => get(context, 'config.context.role')
 
-function havePermission(roleMap, action, role) {
-  return roleMap[role].includes(action)
+function havePermission (roleMap = {}, action, role) {
+  const permissions = roleMap[role]
+
+  if (permissions && permissions.includes(action)) return true
+  throw new Error(`Permission ${action} denied`)
 }
 
 /**
@@ -23,8 +26,7 @@ function havePermission(roleMap, action, role) {
 
 const rbacMiddleware = (roleMap, getRole = defaultGetRole) =>
   (serviceContext) => (instanceContext) => {
-
-    context.instanceContext = (action) => {
+    instanceContext.usePermission = (action) => {
       const role = getRole(serviceContext)
       return havePermission(roleMap, action, role)
     }
